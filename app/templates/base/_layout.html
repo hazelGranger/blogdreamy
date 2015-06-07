@@ -1,0 +1,84 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie10 lt-ie9 lt-ie8 lt-ie7" lang="zh-CN"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie10 lt-ie9 lt-ie8" lang="zh-CN"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie10 lt-ie9" lang="zh-CN"> <![endif]-->
+<!--[if IE 9]>         <html class="no-js lt-ie10" lang="zh-CN"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="zh-Hans"> <!--<![endif]-->
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- 国产双核浏览器用 start -->
+    <meta name="renderer" content="webkit"/>
+    <!-- 国产双核浏览器用 end -->
+    
+    {% block seotag %}
+    <meta name="keywords" content="{{keywords}}" />
+    <meta name="description" content="{{description}}" />
+    {% endblock %}
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.5">
+
+    <title>{{pageTitle}}</title>
+
+    <link rel="shortcut icon" href="/favicon.ico">
+
+    {% block styles %}
+
+    <!-- build:css(.) /styles/vendor.css -->
+
+    <!-- endbuild -->
+
+    <!-- build:css(.tmp/) /styles/frame-all.css -->
+    <link rel="stylesheet" href="/styles/style.css">
+    <!-- endbuild -->
+    {% if pageName %}
+    <!-- build:css(.tmp/) /styles/{{pageName}}.css -->
+    <link rel="stylesheet" href="/styles/{{pageName}}.css" />
+    <!-- endbuild -->
+    {% endif %}
+
+    <!-- build:css(.tmp) /styles/ie.css -->
+    <!--[if IE]>
+      <link rel="stylesheet" href="/styles/ie.css" type="text/css" />
+    <![endif]-->
+    <!-- endbuild -->
+
+    <!-- build:js(.) /scripts/shims.js -->
+    <!--[if lt IE 9]>
+      <script src="/vendors/es5-shim/es5-shim.js" type="text/javascript"></script>
+      <script src="/vendors/html5shiv/dist/html5shiv.js"></script>
+      <script src="/vendors/ExplorerCanvas/excanvas.js"></script>
+      <script src="/vendors/css3-mediaqueries-js/css3-mediaqueries.js" type="text/javascript"></script>
+    <![endif]-->
+    <!-- endbuild -->
+    {% endblock %}
+  </head>
+  <body>
+    <div id="root">
+      {% block header %}
+        {% include "_header.html" %}
+      {% endblock %}
+
+      {% block content %}
+      <p>This is just an awesome page.</p>
+      {% endblock %}
+      
+      {%block footer %}
+        {% include "_footer.html" %}
+      {% endblock %}
+    </div>
+
+    {% block scripts %}
+    <!-- build:js(.) /scripts/vendors.js -->
+    <script src="/vendors/jquery/dist/jquery.js"></script>
+    <script src="scripts/main.js"></script>
+
+    <!-- endbuild -->
+    <!-- build:js /scripts/utils.js -->
+    
+    <!-- endbuild -->
+
+    {% endblock %}
+
+  </body>
+</html>
