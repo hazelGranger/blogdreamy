@@ -56,16 +56,16 @@ $(document).ready(function(){
 
 	function getMousePos(event){
 		var e =event || window.event;
-		console.log({'x': e.screenX,'y':e.screenY});
-		return{'x': e.screenX,'y':e.screenY};
+		console.log({'x': e.screenX,'y':e.screenY + $(document).scrollTop()});
+		return{'x': e.screenX,'y':e.screenY + $(document).scrollTop()};
 	}
 
 	function countTransformOrigin(obj){
 
-		var docWidth = $(window).width();
-		var docHeight = $(window).height();
-		console.log(obj.x*100/docWidth + "% "+ obj.y*100/docHeight + "% 0px");
-		return obj.x*100/docWidth + "% "+ obj.y*100/docHeight + "% 0px";
+		var windowWidth = $(window).width();
+		var windowHeight = $(window).height();
+		console.log(obj.x*100/windowWidth + "% "+ obj.y*100/windowHeight + "% 0px");
+		return obj.x*100/windowWidth + "% "+ obj.y*100/windowHeight + "% 0px";
 	}
 
 	position(size());
