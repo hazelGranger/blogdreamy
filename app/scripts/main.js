@@ -89,6 +89,36 @@ $(document).ready(function(){
 		$('.article-header-wrap').css({'width': windowSize.width,'height': windowSize.height});
 	}
 
+	function getObjPos (obj) {
+		return {"top":parseInt(obj.css("top")),
+				"btm": parseInt(obj.css("top")) + obj.height(),
+				"left": parseInt(obj.css("left")),
+				"right": parseInt(obj.css("top")) + obj.width()}
+	}
+
+	function getScrollPos () {
+		return {"scrollTop":$(document).scrollTop(),"scrollBtm": $(document).scrollTop() + $(window).height()}
+	}
+
+	function anchor (obj) {
+
+		if (getObjPos(obj).top < getScrollPos().scrollTop){
+			$(document).scrollTop(getObjPos(obj).top);
+		}else if (getObjPos(obj).btm > getScrollPos().scrollBtm){
+			$(document).scrollTop(getObjPos(obj).btm - $(window).height());
+		}
+	}
+	//obj的中心位置大于还是小于window的中心位置（水平）
+	function analyzePos (obj) {
+		var objCenter = (getObjPos(obj).top + getObjPos(obj).btm)/2;
+		var windowCenter = (getScrollPos().scrollTop + getScrollPos().scrollBtm)/2;
+		if (objCenter < windowCenter) {
+			return true;
+		}else{
+			return false;
+		}
+	}
+
 	function getIndex(obj){
 
 	}
@@ -108,15 +138,20 @@ $(document).ready(function(){
 
 	$('.poster').click(function(){
 		//poster本身.
+		anchor($(this));
 		$('.posters').css({'transform-origin':countTransformOrigin(getMousePos(event)),'-webkit-transform-origin':countTransformOrigin(getMousePos(event))});
 		$('.posters').addClass("scale-large");
-		$(this).css({'transform':'translateY(-'+$(this).height()+'px)','-webkit-transform':'translateY(-'+$(this).height()+'px)'});
-		// $(this).next().css({'transform':'translateX('+$(this).next().width()+'px)','-webkit-transform':'translateX('+$(this).next().width()+'px)'});
+		if (analyzePos($(this))) {
+			$(this).css({'transform':'translateY(-'+$(this).height()+'px)','-webkit-transform':'translateY(-'+$(this).height()+'px)'});
+		}else{
+			$(this).css({'transform':'translateY('+$(this).height()+'px)','-webkit-transform':'translateY('+$(this).height()+'px)'});
+		}
+		
 		//内部的显示的文章头图
 		$('.article-header-wrap').addClass("article-header-wrap-large");
 		$('.article-header').addClass("article-header-large");
 		setTimeout(function(){
-			$('.posters').addClass('posters-hidden');
+			// $('.posters').addClass('posters-hidden');
 		}, 800);
 		console.log($(this).attr("data-target"));
 		getPage($(this).attr("data-target"));
