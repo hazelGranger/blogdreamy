@@ -31,9 +31,9 @@ $(document).ready(function(){
 		//配置，poster的单个上限或下限
 		var poster = {
 			widthFloor: 210,
-			widthCeiling: 800,
+			widthCeiling: 600,
 			heightFloor: 210,
-			heightCeiling: 800
+			heightCeiling: 600
 		}
 		var docWidth = $(window).width();
 		var docHeight = $(window).height();
@@ -43,6 +43,7 @@ $(document).ready(function(){
 		var posterWidth = docWidth/averageColumn;
 		$('.poster').each(function(){
 			$(this).css({'width':posterWidth+"px",'height': posterWidth+"px"});
+			$(this).find('.cover,.shadow').css({'width':posterWidth+"px",'height': posterWidth+"px"});
 		})
 		$('.posters').css({'width': docWidth,'height': docHeight});
 		console.log(columnMax,columnMin,averageColumn,posterWidth);
@@ -130,30 +131,47 @@ $(document).ready(function(){
 	position(size());
 	headersResize();
 
-
 	$(window).resize(function(){
 		position(size());
 		headersResize();
 	});
 
+
+
+
 	$('.poster').click(function(){
 		//poster本身.
-		anchor($(this));
-		$('.posters').css({'transform-origin':countTransformOrigin(getMousePos(event)),'-webkit-transform-origin':countTransformOrigin(getMousePos(event))});
-		$('.posters').addClass("scale-large");
-		if (analyzePos($(this))) {
-			$(this).css({'transform':'translateY(-'+$(this).height()+'px)','-webkit-transform':'translateY(-'+$(this).height()+'px)'});
-		}else{
-			$(this).css({'transform':'translateY('+$(this).height()+'px)','-webkit-transform':'translateY('+$(this).height()+'px)'});
-		}
-		
-		//内部的显示的文章头图
-		$('.article-header-wrap').addClass("article-header-wrap-large");
-		$('.article-header').addClass("article-header-large");
-		setTimeout(function(){
-			// $('.posters').addClass('posters-hidden');
-		}, 800);
-		console.log($(this).attr("data-target"));
-		getPage($(this).attr("data-target"));
+		var this_poster = $(this);
+		$.when(anchor(this_poster)).done(function (){
+			$.when(
+					$('.posters').css({'transform-origin':countTransformOrigin(getMousePos()),'-webkit-transform-origin':countTransformOrigin(getMousePos())})			
+				).done(function(){
+				$('.posters').addClass("scale-large");
+				if (analyzePos(this_poster)) {
+					this_poster.css({'transform':'translateY(-'+this_poster.height()+'px)','-webkit-transform':'translateY(-'+this_poster.height()+'px)'});
+				}else{
+					this_poster.css({'transform':'translateY('+this_poster.height()+'px)','-webkit-transform':'translateY('+this_poster.height()+'px)'});
+				}
+				
+				//内部的显示的文章头图
+				$('.article-header-wrap').addClass("article-header-wrap-large");
+				$('.article-header').addClass("article-header-large");
+				setTimeout(function(){
+					$('.posters').addClass('posters-hidden');
+				}, 1800);
+				console.log(this_poster.attr("data-target"));
+				getPage(this_poster.attr("data-target"));
+
+			});
+		});
+	});
+
+	$('.back').click(function(){
+		$('.posters').removeClass('posters-hidden');
+		$('.article-header-wrap').removeClass("article-header-wrap-large");
+		$('.article-header').removeClass("article-header-large");
+		$('.poster').css({'transform':'translateY(0px)','-webkit-transform':'translateY(0px)'});
+		$('.posters').removeClass("scale-large").addClass("scale-normal");
+
 	});
 });
